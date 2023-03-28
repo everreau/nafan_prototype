@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    NAFAN - The National Finding Aid Network -- {{ object.name }}
+{% endblock %}
+
+{% block body %}
+    <h2>{{ object.name }}</h2>
+
+    <p>
+        <ul>
+            <li>Repository: {{object.repository}}</li>
+            <li>Location: {{object.location}}</li>
+            <li>Harvest Type: {{object.get_harvest_type}}</li>
+            <li>Default Format: {{object.get_default_format}}</li>
+        </ul>
+    </p>
+
+    {% if request.user.is_site_admin %}
+    <ul>
+      <li></li><a href="{% url 'update-profile' object.repository.slug object.pk %}">Update Profile</a></li>
+      <li></li><a href="{% url 'delete-profile' object.repository.slug object.pk %}">Delete Profile</a></li>
+    </ul>
+    {% endif %}
+{% endblock %}

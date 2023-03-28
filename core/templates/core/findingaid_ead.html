@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    NAFAN - The National Finding Aid Network -- {{ object.title }}
+{% endblock %}
+
+{% block body %}
+    <h2>{{ object.title }}</h2>
+    <div class="row justify-content-left grid-buffer">    
+        <div class="row grid-buffer">
+            <div class="col-sm-2">    
+                <div class="row collection-info" id="collection-overview">
+                    <div class="span3 sidebar">    
+                        <ul class="nav nav-tabs nav-stacked sidenav collection-info-sidenav affix" id="navTab">
+                            <li class="overview_li">
+                                <a href="#descriptive_identity" data-toggle="scrollto">Collection Overview</a>
+                            </li>
+                            <li class="overview_li">
+                                <a href="#bioghist" data-toggle="scrollto">Biographical/historical information</a>
+                            </li>
+                            <li class="overview_li">
+                                <a href="#content_structure" data-toggle="scrollto">Scope and arrangement</a>
+                            </li>
+                            <li class="overview_li">
+                                <a href="#acquisition_processing" data-toggle="scrollto">Administrative information</a>
+                            </li>
+                            <li class="overview_li">
+                                <a href="#controlaccess" data-toggle="scrollto">Key terms</a>
+                            </li>
+                            <li class="overview_li">
+                                <a href="#access_use" data-toggle="scrollto">Using the collection</a>
+                            </li>
+                            {% for i in object.get_contents %}
+                                {% if i.component == "c01" %}
+                                    <li class="details_li" style="display:none">
+                                        <a href="#{{ i.reference_code}}" data-toggle="scrollto">{{ i.title}}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-sm-10" >
+                <div id="overview">    
+                    <ul class="nav">
+                        {% if object.record_type != "marc" %}
+                            <li class="nav-item">
+                                <button id="overview_tab" type="button">Overview</button>
+                            </li>
+                            <li class="nav-item">
+                                <button id="details_tab" type="button">Details</button>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ object.digital_link }}" type="button">View online items</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a href="{% url 'detail-repository' object.repository.slug %}'" type="button">Contact Contributing Archive</a>
+                        </li>
+                    </ul>
+                    <div>
+                        <b>{{ object.title }}</b><br/>
+                        <b>{{ object.date }}</b>
+                    </div>
+                    <div class="row" id="descriptive_identity">
+                        <div class="col-md-3 text-right"><b>Creator</b></div>
+                        <div class="col-md-9 text-left">{{ object.creator }}</div>
+                        <div class="col-md-3 text-right"><b>Call Number</b></div>
+                        <div class="col-md-9 text-left">{{ object.reference_code }}</div>
+                        <div class="col-md-3 text-right"><b>Physical description</b></div>
+                        <div class="col-md-9 text-left">{{ object.extent }}</div>
+                        <div class="col-md-3 text-right"><b>Language</b></div>
+                        <div class="col-md-9 text-left">{{ object.languages }}</div>
+                        <div class="col-md-3 text-right"><b>Preferred Citation</b></div>
+                        <div class="col-md-9 text-left">{{ object.citation }}</div>
+                        <div class="col-md-3 text-right"><b>Repository</b></div>
+                        <div class="col-md-9 text-left">{{ object.intra_repository }}</div>
+                        <div class="col-md-3 text-right"><b>Access to materials</b></div>
+                        <div class="col-md-9 text-left">Request an in-person research appointment.</div>
+                    </div>
+                    <div>{{ object.abstract | safe }}</div>
+                    
+                    <h4 id="bioghist">BIOGRAPHICAL/HISTORICAL INFORMATION</h4>
+                    <div>{{ object.bioghist | safe}}</div>    
+                    <h5>Chronology</h5>
+                    <ul>
+                        {% for data in object.get_chron %}
+                            <li><b>{{ data.date}}</b> {{ data.event}}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h4 id="content_structure">SCOPE AND ARRANGEMENT</h4>
+                    <div>{{ object.scope_and_content | safe }}</div>
+                    <ul>
+                        {% for data in object.get_series %}
+                          <li><b>{{ data.title }}</b> {{ data.date | safe }} {{ data.scope_and_content | safe}}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h4 id="acquisition_processing">ADMINISTRATIVE INFORMATION</h4>
+                    <h5>CUSTODIAL HISTORY</h5>
+                    <div>{{ object.custodhist | safe }}</div>
+    
+                    <h5>SOURCE OF ACQUISITION</h5>
+                    <div>{{ object.acqinfo | safe }}</div>
+    
+                    <h5>PROCESSING INFORMATION</h5>
+                    <div>{{ object.processinfo | safe }}</div>
+    
+                    <h4 id="controlaccess">KEY TERMS</h4>
+                    <h5>NAMES</h5>   
+                    <ul>
+                        {% for data in object.get_names %}
+                            <li><a href="{{ data.link }}">{{ data.term }}</a></li>
+                        {% endfor %}
+                    </ul>
+    
+                    <h5>SUBJECTS</h5>
+                    <ul class="related">
+                        {% for data in object.get_subjects %}
+                            <li>{{ data.term }}</li>
+                        {% endfor %}
+                    </ul>
+    
+                    <h5>MATERIAL TYPES</h5>
+                    <ul>
+                        {% for data in object.get_materials %}
+                            <li><a href="{{ data.link }}">{{ data.term}}</a></li>
+                        {% endfor %}
+                    </ul>
+
+                    <h4 id="access_use">USING THE COLLECTION</h4>
+                    <h5>ACCESS TO MATERIALS</h5>
+                    <div>Request an in-person research appointment.</div>
+    
+                    <h5>CONDITIONS GOVERNING USE</h5>
+                    <div>{{ object.rights | safe }}</div>
+                </div>
+    
+                <div id="details" style="display:none">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <button id="xoverview_tab" type="button">Overview</button>
+                        </li>
+                        <li class="nav-item">
+                            <button id="xdetails_tab" type="button">Details</button>
+                        </li>
+                    </ul>    
+                    {% for data in object.get_contents %}
+                        {% if data.component == "c01" %}
+                            <div id="{{ data.reference_code}}">
+                                <b>{{ data.title}}</b><br/>
+                                {{ data.intra_repository}}
+                                {{ data.container}}
+                                {{ data.scope_and_content | safe }}
+                                <b>{{ data.extent}}</b>
+                                {{ data.note}}
+                            </div>
+                        {% else %}
+                            <i>{{ data.title }}</i>
+                            {{ data.indent | safe }}{{ data.container }}
+                            {% if data.digital_link %}
+                                {{ data.indent | safe }}
+                                <a href={{ data.digital_link }}>View Digital Object</a>
+                            {% endif %}
+                            {% if data.date %}
+                                {{ data.indent | safe }}{{ data.date }}
+                            {% endif %}
+                            {% if data.extent %}
+                                {{ data.indent | safe }}{{ data.extent}}
+                            {% endif %}
+                            {% if data.scope_and_content %}
+                                {{ data.scope_and_content | safe }}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>    
+            </div>
+        </div>
+    </div>
+{% endblock %}

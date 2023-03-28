@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    NAFAN - The National Finding Aid Network -- Harvest Profiles
+{% endblock %}
+
+{% block body %}
+  <h2>Harvest Profiles</h2>
+  <div class="row grid-buffer">
+    <div class="col-sm-4">
+      <a class="btn btn-md btn-primary" type="button" href="{% url 'create-profile' repository.slug %}">Create New Profile</a>
+    </div>
+    <div class="col-sm-8">        
+    </div>
+</div>
+
+<div class="row justify-content-center grid-buffer">
+  <div class="table-responsive top-buffer">
+    <table class="table table-striped">
+      <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Type</th>
+        <th>Format</th>
+        <th></th>
+        <th></th>
+      </tr>
+        {% for p in object_list %}
+          <tr> 
+            <td>{{ p.name }}</td>
+            <td>{{ p.location }}</td>
+            <td>{{ p.harvest_type }}</td>
+            <td>{{ p.default_format }}</td>
+            <td><a href="{% url 'update-profile' repository.slug p.pk %}">Edit</a></td>
+            <td><a href="{% url 'delete-profile' repository.slug p.pk %}">Delete</a></td>
+          </tr>
+        {% endfor %}
+    </table>
+  </div>
+</div>
+
+{% endblock %}

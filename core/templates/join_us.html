@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+NAFAN - The National Finding Aid Network -- Join Us
+{% endblock %}
+
+{% block body %}
+  <div id="index_notes">
+    <p>Any US-based cultural heritage organization can elect to publish information about the repository and/or share collection guides. To become a new contributor, the organization would complete a simple sign-up process.</p>
+    <p>The following information would be used by the NAFAN product/service team to collect information sufficient to establish a user account for the key contact(s) at the organization, where the account is also associated with a repository record (that can be subsequently edited by the organization).</p>
+  </div>
+  
+  {% if messages %}
+    {% for message in messages %}
+      <h3 class="message">{{ message }}</h3>
+    {% endfor %}
+  {% endif %}
+
+  <p>
+    {% include "includes/form.html" with form=form action="joinus/success"%}
+  </p>
+ {% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    NAFAN - The National Finding Aid Network -- Delete {{ object }}
+{% endblock %}
+
+{% block subheader %}
+    Contributor Dashboard
+{% endblock %}
+
+{% block body %}
+    <p>
+        <form method="post">{% csrf_token %}
+            <p>Are you sure you want to delete "{{ object }}"?</p>
+            {{ form }}
+            <input type="submit" value="Confirm">
+        </form>
+    </p>
+{% endblock %}

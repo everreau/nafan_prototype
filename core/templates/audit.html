@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block subheader %}
+    Audit
+{% endblock %}
+
+{% block body %}
+    <div class="row top-buffer">
+
+      <div class="col-sm-7">
+         <h2 class="page-header text-center">Activity Audit</h2>
+      </div>      
+    </div>
+
+    <div class="row justify-content-center grid-buffer">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <tr>
+                    <th>Audit Date</th>
+                    <th>Message</th>
+                    <th>User</th>
+                </tr>
+                <tr> 
+                    <td>03/12/2022 6:40AM</td>
+                    <td>Finding aid "Maine Papers" created</td>
+                    <td>emile.berliner@nypl.org</td>
+                </tr>
+                <tr> 
+                    <td>03/11/2022 4:15PM</td>
+                    <td>User ritam@nypl.org created</td>
+                    <td>zion.smith@nypl.org</td>
+                </tr>
+                <tr> 
+                    <td>03/11/2022 7:40AM</td>
+                    <td>Finding aid "Wahoo History" updated</td>
+                    <td>john.smith@nypl.org</td>
+                </tr>
+                <tr> 
+                    <td>03/10/2022 10:30AM</td>
+                    <td>Finding aid Patience and Fortitude created</td>
+                    <td>jane.smart@nypl.org</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}

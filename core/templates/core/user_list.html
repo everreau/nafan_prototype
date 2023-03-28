@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    NAFAN - The National Finding Aid Network -- Users
+{% endblock %}
+
+{% block body %}
+  <h2>Users</h2>
+
+  <div>
+    <form method="get">
+      {% csrf_token %}
+      <div class="row grid-buffer">
+        <div class="col-md-7">
+          <div class="form_field_container" id="search_area">
+            <select class="form-control medium_field manage_search" id="search_field" name="search_field">
+              <option value="email">Username</option>
+              <option value="full_name">Full Name</option>
+            </select>
+            <input type="text" class="form-control manage_search medium_field" id="search_term"  name="search_term">
+            <button type="submit" class="btn btn-primary manage_search" id="search">Search</button>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="form_field_container float-lg-right" id="new_button_area">
+            <select class="form-control medium_field manage_search" id="status_filter" name="status_filter">
+              <option value="">All Users</option>
+              <option value="Active">Active Users</option>
+              <option value="Inactive">Inactive Users</option>
+            </select>
+            <div class="button_container">
+              <a type="button" class="btn btn-primary manage_search" id="new" href="{% url 'create-user' %}">New User</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="row justify-content-center grid-buffer">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <tr class="table_header">
+            <th>Username</th>
+            <th>Name</th>
+            <th>User Type</th>
+            <th>Status</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+          {% for u in object_list %}
+            <tr> 
+              <td>{{ u.email }}</td>
+              <td>{{ u.full_name }}</td>
+              <td>{{ u.user_type }}</td>
+              <td>{% if u.is_active %}Active{% else %}Inactive{% endif %}</td>
+              <td><a href="{% url 'update-user' u.pk %}">Update</a></td>
+              <td><a href="{% url 'delete-user' u.pk %}">Delete</a></td>
+              <td>Repositories</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

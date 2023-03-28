@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    NAFAN - The National Finding Aid Network -- {{ object.title }}
+{% endblock %}
+
+{% block body %}
+    <h2>{{ object.title }}</h2>
+
+    <div id="overview">
+      <h3>Overview</h3>
+      <div class="row" id="descriptive_identity">
+        <div class="col-lg-12 aid_data"><b>Persistent identifier: </b>{{ object.ark}}</div> 
+        <div class="col-lg-12 aid_data"><b>Collection number: </b>{{ object.reference_code}}</div>
+        <div class="col-lg-12 aid_data"><b>Location:</b> <a href="{% url 'detail-repository' object.repository.slug %}">{{ object.repository }}</a></div>
+        <div class="col-lg-12 aid_data"><b>Dates:</b> {{ object.date}}</div>
+        <div class="col-lg-12 aid_data"><b>Extent:</b> {{ object.extent }}</div>
+        <div class="col-lg-12 aid_data"><b>Scope and content:</b> {{ object.scope_and_content}}</div>
+        <div class="col-lg-12 aid_data"><b>Access:</b> {{ object.governing_access }}</div>
+        <div class="col-lg-12 aid_data"><b>Languages:</b> {{ object.languages }}</div>
+        {% if object.rights %}
+        <div class="col-lg-12 aid_data"><b>Collection guide made available under the following license:</b> {{ object.rights | safe }}</div>
+        {% endif %}
+        <div class="col-lg-12 aid_data"><b>Collection guide last contribution date:</b> {{ object.last_update }}</div>
+      </div>
+    </div>
+
+    <div id="sidebar">
+      {% if object.repository_link %}
+        <img src="https://raw.githubusercontent.com/nafanproject/prototype/master/media/external-link-line.jpeg" alt="Logo" height="50" width="50">
+        <a href="{{ object.repository_link }}">Visit Finding Aid on Institute Site</a>
+      {% else %}
+        {% if object.record_type == "pdf" %}
+            <img src="https://raw.githubusercontent.com/nafanproject/prototype/master/media/collection_guide_pdf.jpg" alt="Logo" height="50" width="50">
+            <a href="">Download Finding Aid PDF</a>
+        {% endif %}
+      {% endif %}
+
+      <h3>Related Topics</h3>
+      <ul class="related">
+        {% for h in object.subjectheader_set.all %}
+          <li>{{ h.subject_header }}</a></li>
+        {% endfor %}
+      </ul>
+
+      <h3>Descriptions of Related Persons, Families, and Organizations</h3>
+      <ul class="related">
+        <li class="related-mats"><a href="{{object.snac}}">Social Networks and Archival Context</a></li>
+        <li class="related-mats"><a href="{{object.wiki}}">Wikidata</a></li>
+      </ul>
+    </div>
+    {% if request.user.is_site_admin %}
+      <ul>
+        <li><a href="{% url 'update-findingaid' object.repository.slug object.pk %}">Update Finding Aid</a></li>
+        <li><a href="{% url 'delete-findingaid' object.repository.slug object.pk %}">Delete Finding Aid</a></li>
+      </ul>
+    {% endif %}
+  </div>
+  {% endblock %}

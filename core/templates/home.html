@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<p>This <a href='https://github.com/nafanproject/prototype'>prototype</a> was developed as part of the 
+  <a href='https://confluence.ucop.edu/display/NAFAN/'>"Building a National Finding Aid Network" </a> (NAFAN) project 
+  (September 2020 to February 2023) to demonstrate potential features and functions of a national-level platform 
+  for aggregating collection guides.</p>
+
+<div class="row justify-content-center">
+  <div class="col-12 col-md-10 col-lg-8">
+  <p  class="col-xs-1" align="center"><b>Sample Search Form</b></p>
+</div>
+
+<div class="col-12 col-md-10 col-lg-8">
+  <form class="card card-sm" action="{% url 'home' %}" method="get">
+      <div class="card-body row no-gutters align-items-center">
+          <div class="col-auto">
+              <i class="fas fa-search h4 text-body"></i>
+          </div>
+          <div class="col">
+              <input class="form-control form-control-lg form-control-borderless" name="searchTerm" type="search" placeholder="Search collection guides">
+          </div>
+      </div>
+  </form>
+
+  {% if search_term  %}
+
+      <p></p>
+      <p>Searched for: <strong>{{ search_term }}</strong></p>
+
+      {% for data in response %}
+
+          <p></p>
+          {{ forloop.counter }}.&nbsp;<a href='/view_aid_preliminary/{{ data.finding_aid_id }}'>{{ data.title }}</a>
+          <p></p>
+          <b>About this collection:&nbsp;</b>{{ data.content }}
+          <p></p>
+          <b>Contributing archive:&nbsp;</b><a href='/Repository_Info/{{ data.repository }}'>{{ data.repository }}</a>
+          
+      {% endfor %}
+
+  {% else %}
+
+  <div id="index_notes">
+  </div>
+
+  {% endif %}
+</div>
+
+<div class="col-12 col-md-10 col-lg-8">
+  <p  class="col-xs-1" align="center"><b>Sample Records</b></p>
+</div>
+
+<div class="col-12 col-md-10 col-lg-8 parent">
+  <ul class="text-center">
+    <li><a href="{% url 'detail-repository' 'nypl' %}"><span class="links_text">Repository record</span></a></li>
+    <li><a href='http://nafan-devvm.village.virginia.edu/view_aid_preliminary/20915'><span class="links_text">Collection guide</span><br/><span class="links_text">(NAFAN-hosted PDF)</span></a></li>
+    <li><a href='http://nafan-devvm.village.virginia.edu/view_aid_preliminary/20916'><span class="links_text">Collection guide</span><br/><span class="links_text">(NAFAN-hosted EAD)</span></a></li>
+    <li><a href='http://nafan-devvm.village.virginia.edu/view_aid_preliminary/22081'><span class="links_text">Collection guide</span><br/><span class="links_text">(NAFAN-hosted MARC)</span></a></li>
+    <li><a href='http://nafan-devvm.village.virginia.edu/view_aid_preliminary/23293'><span class="links_text">Collection guide</span><br/><span class="links_text">(locally-hosted)</span></a></li>
+  </ul>
+  <ul class="text-center">
+    <li><a href='http://nafan-devvm.village.virginia.edu/Repository_Info/New%20York%20Public%20Library'><img src="https://raw.githubusercontent.com/nafanproject/prototype/master/media/repository_record.jpg" alt="Logo" height="50" width="50"></a></li>
+    <li><a href='http://nafan-devvm.village.virginia.edu/view_aid_preliminary/20915'><img src="https://raw.githubusercontent.com/nafanproject/prototype/master/media/collection_guide_pdf.jpg" alt="Logo" height="50" width="50"></a></li>
+    <li><a href='http://nafan-devvm.village.virginia.edu/view_aid_preliminary/20916'><img src="https://raw.githubusercontent.com/nafanproject/prototype/master/media/collection_guide_ead.jpg" alt="Logo" height="50" width="50"></a></li>
+    <li><a href='http://nafan-devvm.village.virginia.edu/view_aid_preliminary/22081'><img src="https://raw.githubusercontent.com/nafanproject/prototype/master/media/collection_guide_marc.jpg" alt="Logo" height="50" width="50"></a></li>
+    <li><a href='http://nafan-devvm.village.virginia.edu/view_aid_preliminary/23293'><img src="https://raw.githubusercontent.com/nafanproject/prototype/master/media/collection_guide_local.jpg" alt="Logo" height="50" width="50"></a></li>
+  </ul>
+</div>
+
+<div class="col-12 col-md-10 col-lg-8 parent">
+  <ul class="text-center">
+    <li><a href="{% url 'login' %}"><span class="links_text">Contributor Dashboard</span><br/><span class="links_text"></span></a></li>
+    <li><a href="{% url 'join-us' %}"><span class="links_text">Become a Contributor</span><br/><span class="links_text"></span></a></li>
+  </ul>
+  <ul class="text-center">
+    <li><a href="{% url 'login' %}"><img src="https://raw.githubusercontent.com/nafanproject/prototype/master/media/contributor_dashboard.jpg" alt="Logo" height="50" width="50"></a></li>
+    <li><a href="{% url 'join-us' %}"><img src="https://raw.githubusercontent.com/nafanproject/prototype/master/media/become_contributor.jpg" alt="Logo" height="50" width="50"></a></li>
+  </ul>
+</div>
+{% endblock %}

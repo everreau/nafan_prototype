@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    NAFAN - The National Finding Aid Network -- Finding Aids
+{% endblock %}
+
+{% block body %}
+  <h2>Finding Aids</h2>
+
+  <div class="row grid-buffer">
+    <div class="col-sm-4">
+      <form action="{% url 'create-findingaid' repository.slug %}" method="get">
+        <select name="record_type" id="record_type">
+          <option value="dacs">Online Creation Form</option>
+          <option value="ead">Upload EAD</option>
+          <option value="marc">Upload MARC</option>
+          <option value="pdf">Upload PDF</option>
+        </select>
+        <input class="btn btn-primary" type="submit" value="New Finding Aid"/>
+      </form>
+    </div>
+    <div class="col-sm-2">
+      {% if repository.get_defaults %}
+        <a class="float-right" href="{% url 'update-defaults' repository.slug repository.get_defaults.pk %}">Finding Aid Defaults</a>
+      {% else %}
+        <a class="float-right" href="{% url 'create-defaults' repository.slug %}">Finding Aid Defaults</a>
+      {% endif %}
+    </div>
+
+    <div class="col-sm-2">
+      <a href="{% url 'list-profiles' repository.slug %}" class="float-right">Harvest Profiles</a>
+    </div>
+  </div>
+
+  <div class="row justify-content-center grid-buffer">
+    <div class="table-responsive top-buffer">
+      <table class="table table-striped">
+        <tr>
+          <th>Title</th>
+          <th>Last Update</th>
+          <th>Updated By<th>
+          <th></th>
+          <th></th>
+        </tr>
+        {% for f in object_list %}
+          <tr> 
+            <td>{{ f.title }}</td>
+            <td>{{ f.last_update }}</td>
+            <td>{{ f.updated_by }}</td>
+            <td><a href="{% url 'update-findingaid' repository.slug f.pk %}">Edit</a></td>
+            <td><a href="{% url 'delete-findingaid' repository.slug f.pk %}">Delete</a></td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

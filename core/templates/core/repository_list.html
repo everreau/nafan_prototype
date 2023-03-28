@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    NAFAN - The National Finding Aid Network -- Repositories
+{% endblock %}
+
+{% block body %}
+  <h2>Repositories</h2>
+
+  <div>
+  <form method="get">
+    {% csrf_token %}
+    <div class="row grid-buffer">
+      <div class="col-md-7">
+        <div class="form_field_container" id="search_area">
+          <select class="form-control medium_field manage_search" id="search_field" name="search_field">
+            <option value="Repository">Repository</option>
+            <option value="City">City</option>
+            <option value="State">State</option>
+          </select>
+          <input type="text" class="form-control manage_search medium_field" id="search_term"  name="search_term">
+          <button type="submit" name="search" value="search" class="btn btn-primary manage_search" id="search">Search</button>
+          <button type="submit" name="reset" value="reset" class="btn btn-primary manage_search" id="reset">Reset</button>
+        </div>
+      </div>
+      <div class="col-md-5">
+        {% if request.user.is_site_admin %}
+          <div class="form_field_container float-lg-right" id="new_button_area">
+            <div class="button_container">
+              <a type="button" class="btn btn-primary manage_search" id="new" href="{% url 'create-repository' %}">New Repository</a>
+            </div>
+            <select class="form-control medium_field manage_search" id="status_filter" name="status_filter" onChange="this.form.submit();">
+              <option value="All">All</option>
+              <option value="Unresearched">Unresearched</option>
+              <option value="Researched">Researched</option>
+              <option value="Duplicate">Duplicate</option>
+              <option value="Could Not Find Online">Could Not Find Online</option>
+            </select>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+
+  <div class="row justify-content-center grid-buffer">
+    <div class="table-responsive top-buffer">
+        <table class="table table-striped">
+            <tr class="table_header">
+                <th class="string_sortable">Repository</th>
+                <th class="string_sortable">City</th>
+                <th class="string_sortable">State</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for r in object_list %}
+              <tr> 
+                <td><a href="{% url 'detail-repository' r.slug %}">{{ r.name }}</a></td>
+                <td>{{ r.st_city }}</td>
+                <td>{{ r.state }}</td>
+                <td><a href="{% url 'update-repository' r.slug %}">Edit</a></td>
+                <td><a href="{% url 'list-findingaids' r.slug %}">Finding Aids</a></td>
+              </tr>
+            {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

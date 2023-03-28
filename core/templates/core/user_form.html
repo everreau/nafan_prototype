@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    NAFAN - The National Finding Aid Network -- {% if object %}Edit{% else %}Add{% endif %} User
+{% endblock %}
+
+{% block subheader %}
+  Contributor Dashboard
+{% endblock %}
+
+{% block body %}
+  <h2>Add User</h2>
+  <p>
+    {% include "includes/form.html" with form=form %}
+  </p>
+{% endblock %}

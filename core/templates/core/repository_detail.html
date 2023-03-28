@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    NAFAN - The National Finding Aid Network -- {{ object.name }}
+{% endblock %}
+
+{% block body %}
+    <h2>{{ object.name }}</h2>
+
+    <p><b>Repository Type:</b> {{ object.repository_type }}</p>
+    <p><b>Address:</b></p>
+    <p>{{object.street_address_1}}, {{object.st_city}}, {{object.state}} {{ object.st_zip_code_5_numbers }} </p>
+    <p><b>County:</b> {{ object.street_address_county }}</p>
+    <p><b>Phone:</b> {{ object.phone }}</p>
+    <p><b>Website:</b> <a href="{{ object.url }}">{{ object.url }}</a></p>
+    <p><b>Email:</b> {{ object.email }}</p>
+    <p><b>Latitude:</b> {{ object.latitude  }}</p>
+    <p><b>Longitude:</b> {{ object.longitude }}</p>
+    <p>{{ object.description }}</p>
+
+    {% if request.user.is_site_admin %}
+    <h3>Harvest Profiles</h3>
+    <ul>
+        {% for p in object.harvestprofile_set.all %}
+            <li><a href="{% url 'detail-profile' object.slug p.pk %}">{{ p }}</a></li>
+        {% endfor %}
+        {% if request.user.is_site_admin %}
+            <li><a href="{% url 'create-profile' object.slug %}">Add Harvest Profile</a></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+    
+    <h3>Finding Aids</h3>
+    <ul>
+    {% for f in object.findingaid_set.all %}
+        <li><a href="{% url 'detail-findingaid' object.slug f.pk %}">{{ f }}</a></li>
+    {% endfor %}
+    {% if request.user.is_site_admin %}
+        <li><a href="{% url 'create-findingaid' object.slug %}">Add Finding Aids</a><li>
+    {% endif %}
+</ul>
+
+    {% if request.user.is_site_admin %}
+        <ul>
+            <li><a href="{% url 'add-repository-user' object.slug %}">Add Users</a></li>
+            <li><a href="{% url 'update-repository' object.slug %}">Edit Repository</a></li>
+            <li><a href="{% url 'delete-repository' object.slug %}">Delete Repository</a></li>
+        </ul>
+    {% endif %}
+{% endblock %}
